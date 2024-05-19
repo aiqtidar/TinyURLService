@@ -32,10 +32,13 @@ Approach:
 	- Keep the architecture simple but sustainable, so that code can be reused in the future
 	
 - Specs:
-	- Architecture: MVVM
 	- .Net Version: 8.0
 
 
+Problems:
+	- As you may have noticed, the hashes are computed to determine the uniqueness of a URL. There are a number of problems behind this when scaled:
+		- There will be hash collissions for large data volumes.
+		- The hashes are inherently 32 bit integers, and can hold up to 2^32 unique values. By comparison, IPV6 addresses have 128 bit addresses. As a result, the number of potential addresses stored in this manner might not be enough in the future.
 
 
 
