@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace TinyURLService.Domain.URLs
 {
-    public class ShortUrl : BaseUrl
+    public class ShortUrl(Uri Uri) : BaseUrl(Uri)
     {
-        public int hits { get; set; }
-
-        public ShortUrl(Uri Uri) : base(Uri)
-        {
-            hits = 0;
-        }
+        public int hits { get; set; } = 0;
     }
 }

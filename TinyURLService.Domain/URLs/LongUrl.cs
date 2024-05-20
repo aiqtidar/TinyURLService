@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace TinyURLService.Domain.URLs
 {
-    public class LongUrl : BaseUrl
+    public class LongUrl(Uri Uri) : BaseUrl(Uri)
     {
-        public LongUrl(Uri Uri) : base(Uri) { }
-
     }
 }
 

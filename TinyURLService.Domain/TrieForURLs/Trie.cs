@@ -53,7 +53,6 @@ namespace TinyURLService.Domain.TrieForURLs
 
         private Dictionary<ShortUrl, LongUrl> ExistingShortUrls { get; } = new Dictionary<ShortUrl, LongUrl>(new BaseUrlEqualityComparer());
 
-        // Returns false if the insert is not possible
         public bool Insert(LongUrl longUrl, IList<ShortUrl> shortUrls)
         {
             // Is this insert possible?
@@ -74,6 +73,7 @@ namespace TinyURLService.Domain.TrieForURLs
 
         public bool Insert(LongUrl longUrl, ShortUrl shortUrl)
         {
+            if (longUrl == null || shortUrl == null) return false;
             return Insert(longUrl, new List<ShortUrl> { shortUrl });
         }
 

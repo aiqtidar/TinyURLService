@@ -49,6 +49,8 @@ Note that these problems would also persist for the simpler approach (with two d
 ## TODO
 As with all good projects, there is always more to do!
 
-I've left a number of TODOs in the codebase, so that I can improve it in the future when I (if ever) find time. **Please understand that this project was completed within 7 hours and concessions were made to complete it within the time constaints I had.**
+I've left a number of TODOs in the codebase, so that I can improve it in the future when I (if ever) find time. For now, I've also left in the functionality that a deleting a path with delete all urls under that path as well. It is an intentional feature that can easily be remediated by repointing nodes. After implementing the project, I understood how this might be troublesome and shouldn't be the default (a flag should be introduced instead).
+
+***Please understand that this project was completed within 7 hours and concessions were made to complete it within the time constaints I had.***
 
 

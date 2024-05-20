@@ -3,9 +3,7 @@ using TinyURLService.Domain.URLs;
 
 namespace TinyURLService.Data.Repositories
 {
-    // For short URLs, we will need to make sure they are unique.
-    // For long URLs, we will need to map them to short urls. Since these are technically our "clients" we are interested in getting the host, path etc. for statistical purposes
-    // We will implement a Trie for the long url - this will enable us to sort these u
+    // Check Readme for more information on why tries were used
     public class InMemoryRepository : IRepository<bool>
     {
         // Dictionary to keep track of existing short URLs - required to make shortURLs unique

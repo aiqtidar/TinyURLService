@@ -68,7 +68,6 @@ namespace TinyURLService.Service.URLService
         {
             if (uri == null || customUri == "") return false;
 
-            // Try 50 iterations before reporting error
             string generatedShortUrl = _generator.GenerateUrl(customUri);
             if (!_repository.AddShortUrlAsync(uri, new Uri(generatedShortUrl)).Result) return false;
             return true;
