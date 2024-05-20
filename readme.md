@@ -44,6 +44,8 @@ As you may have noticed, the hashes are computed to determine the uniqueness of 
 - There will be hash collissions for large data volumes.
 - The hashes are inherently 32 bit integers, and can hold up to 2^32 unique values. By comparison, IPV6 addresses have 128 bit addresses. As a result, the number of potential addresses stored in this manner might not be enough in the future.
 
+Note that these problems would also persist for the simpler approach (with two dictionaries). The proper way to get rid of this problem is to introduce unique Ids and persist them in a database.
+
 ## TODO
 As with all good projects, there is always more to do!
 
