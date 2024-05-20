@@ -8,12 +8,12 @@ using Microsoft.Extensions.Configuration;
 
 public class Program
 {
+    // TODO: Move this to a different project so that we have a common configuration for all
     public static IConfigurationRoot Configuration { get; set; }
 
     public static void Main(string[] args)
     {
         // Just a dummy read operation for now
-        // TODO: Move this to a different project so that we have a common configuration for all
         Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
