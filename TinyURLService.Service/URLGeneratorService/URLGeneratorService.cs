@@ -12,6 +12,8 @@ namespace TinyURLService.Service.URLGeneratorService
 
         public string GenerateUrl(int length)
         {
+            if (length < 0 || length > 30) length = 30; // A better way to handle this could be by throwing and catching an ArgumentException
+
             // TODO: Values here need to go in appsettings
             StringBuilder result = new StringBuilder(length);
 
@@ -25,6 +27,7 @@ namespace TinyURLService.Service.URLGeneratorService
 
         public string GenerateUrl(string customUrl)
         {
+            if (string.IsNullOrEmpty(customUrl)) return "";
             return new StringBuilder().Append("https://tinyUrlDomain.com/").Append(customUrl).ToString();            
         }
 

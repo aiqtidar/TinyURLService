@@ -13,51 +13,69 @@ namespace TinyURLService.Data.Repositories
 
         public Task<bool> AddShortUrlAsync(Uri longUri, Uri shortUri)
         {
+            if (longUri == null || shortUri == null) return Task.FromResult(false);
             return Task.FromResult(UrlTrie.Insert(new LongUrl(longUri) , new ShortUrl(shortUri)));
         }
 
         public Task<bool> AddShortUrlsAsync(Uri longUri, IList<Uri> shortUris)
         {
+            if (longUri == null || shortUris == null) return Task.FromResult(false);
             return Task.FromResult(UrlTrie.Insert(new LongUrl(longUri), shortUris.Select(x => new ShortUrl(x)).ToList()));
         }
 
         public Task<bool> DeleteLongUrlAsync(Uri longUri)
         {
+            if (longUri == null) return Task.FromResult(false);
             return Task.FromResult(UrlTrie.Remove(new LongUrl(longUri)));
         }
 
         public Task<bool> DeleteShortUrlAsync(Uri shortUri)
         {
+            if (shortUri == null) return Task.FromResult(false);
             return Task.FromResult(UrlTrie.Remove(new ShortUrl(shortUri)));
         }
 
         public Task<bool> DoesLongUrlExistAsync(Uri longUri)
         {
+            if (longUri == null) return Task.FromResult(false);
             return Task.FromResult(UrlTrie.DoesUriExist(new LongUrl(longUri)));
         }
 
-        public Task<LongUrl?> GetLongUrlAsync(Uri shotUri)
+        public Task<LongUrl?>? GetLongUrlAsync(Uri shortUri)
         {
-            return Task.FromResult(UrlTrie.GetLongUrl(new ShortUrl(shotUri)));
+            if (shortUri == null) return null;
+            return Task.FromResult(UrlTrie.GetLongUrl(new ShortUrl(shortUri)));
         }
 
         public Task<IList<ShortUrl>?> GetShortUrlAsync(Uri longUri)
         {
+            if (longUri == null)
+            {
+                IList<ShortUrl>? list = null;
+                return Task.FromResult(list);
+            }
             return Task.FromResult(UrlTrie.GetShortUrls(new LongUrl(longUri)));
         }
 
-        public Task<bool> DoesShortUrlExistAsync(Uri shortUrl)
+        public Task<bool> DoesShortUrlExistAsync(Uri shortUri)
         {
-            return Task.FromResult(UrlTrie.DoesShortUrlExist(new ShortUrl(shortUrl)));
+            if (shortUri == null) return Task.FromResult(false);
+            return Task.FromResult(UrlTrie.DoesShortUrlExist(new ShortUrl(shortUri)));
         }
 
         public Task<bool> AddHitToAShortUrlAsync(Uri shortUri)
         {
+            if (shortUri == null) return Task.FromResult(false);
             return Task.FromResult(UrlTrie.AddHitToShortUrl(new ShortUrl(shortUri)));
         }
 
         public Task<int?> GetShortUrlHitsAsync(Uri shortUri)
         {
+            if (shortUri == null)
+            {
+                int? res = null;
+                return Task.FromResult(res);
+            }
             return Task.FromResult(UrlTrie.GetShortUrlHits(new ShortUrl(shortUri)));
         }
 

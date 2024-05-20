@@ -13,6 +13,8 @@ namespace TinyURLService.Service.URLService
 
         public string CreateTinyUrlFromUrl(Uri uri)
         {
+            if (uri == null) return "";
+
             // Try 50 iterations before reporting error
             string? shortUrl = TryWithRetry(() =>
             {
@@ -28,6 +30,8 @@ namespace TinyURLService.Service.URLService
 
         public IList<ShortUrl> GetTinyUrlFromUrl(Uri uri)
         {
+            if (uri == null) return new List<ShortUrl>();
+
             IList<ShortUrl>? shortUrls = _repository.GetShortUrlAsync(uri).Result;
 
             if (shortUrls == null || shortUrls.Count == 0) return [];
@@ -36,13 +40,17 @@ namespace TinyURLService.Service.URLService
 
         public string GetUrlFromTinyUrl(Uri tinyUri)
         {
-            string? res = _repository.GetLongUrlAsync(tinyUri).Result?.ToString();
+            if (tinyUri == null) return "";
+
+            string? res = _repository.GetLongUrlAsync(tinyUri)?.Result?.ToString();
             if (res == null) return "";
             else return res;
         }
 
         public string GetPopularityOfTinyUrl(Uri tinyUri)
         {
+            if (tinyUri == null) return "";
+
             string? res = _repository.GetShortUrlHitsAsync(tinyUri)?.Result?.ToString();
             if (res == null) return "";
             else return res;
@@ -50,12 +58,16 @@ namespace TinyURLService.Service.URLService
 
         public bool AddHitToTinyUrl(Uri tinyUri)
         {
+            if (tinyUri == null) return false;
+
             if (_repository.AddHitToAShortUrlAsync(tinyUri).Result) return true;
             return false;
         }
 
         public bool CreateTinyUrlFromUrl(Uri uri, string customUri)
         {
+            if (uri == null || customUri == "") return false;
+
             // Try 50 iterations before reporting error
             string generatedShortUrl = _generator.GenerateUrl(customUri);
             if (!_repository.AddShortUrlAsync(uri, new Uri(generatedShortUrl)).Result) return false;
@@ -64,16 +76,19 @@ namespace TinyURLService.Service.URLService
 
         public bool DeleteTinyUrl(Uri tinyUri)
         {
+            if (tinyUri == null) return false;
             return _repository.DeleteShortUrlAsync(tinyUri).Result;
         }
 
         public bool DeleteAllTinyUrlsFromUrl(Uri uri)
         {
+            if (uri == null) return false;
             return _repository.DeleteLongUrlAsync(uri).Result;
         }
 
         public bool DoesTinyUrlExist(Uri tinyUri)
         {
+            if (tinyUri == null) return false;
             return _repository.DoesShortUrlExistAsync(tinyUri).Result;
         }
 

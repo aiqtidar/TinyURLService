@@ -185,12 +185,13 @@ namespace TinyURLService.Domain.TrieForURLs
 
         public bool AddHitToShortUrl(ShortUrl shortUrl)
         {
-            if (ExistingShortUrls.ContainsKey(shortUrl))
-            {
-                GetShortUrls(ExistingShortUrls[shortUrl]).First(x => x.Uri.ToString().Equals(shortUrl.Uri.ToString())).hits++;
-                return true;
-            }
-            return false;
+            if (!ExistingShortUrls.ContainsKey(shortUrl)) return false;
+            var l = GetShortUrls(ExistingShortUrls[shortUrl]);
+
+            if (l==null || l.Count == 0) return false;
+            else l.First(x => x.Uri.ToString().Equals(shortUrl.Uri.ToString())).hits++;
+            
+            return true;            
         }
 
         private TrieNode? TraverseTree(BaseUrl url)
