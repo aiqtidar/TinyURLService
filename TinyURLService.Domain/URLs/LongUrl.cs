@@ -9,12 +9,7 @@ namespace TinyURLService.Domain.URLs
 {
     public class LongUrl : BaseUrl
     {
-        public LongUrl(Uri Uri) : base()
-        {
-            this.Uri = Uri;
-        }
-
-        public override Uri Uri { get; set; }
+        public LongUrl(Uri Uri) : base(Uri) { }
 
     }
 }

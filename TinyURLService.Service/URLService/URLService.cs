@@ -28,7 +28,7 @@ namespace TinyURLService.Service.URLService
 
         public IList<ShortUrl> GetTinyUrlFromUrl(Uri uri)
         {
-            IList<ShortUrl> shortUrls = _repository.GetShortUrlAsync(uri).Result;
+            IList<ShortUrl>? shortUrls = _repository.GetShortUrlAsync(uri).Result;
 
             if (shortUrls == null || shortUrls.Count == 0) return [];
             else return shortUrls;
@@ -36,7 +36,7 @@ namespace TinyURLService.Service.URLService
 
         public string GetUrlFromTinyUrl(Uri tinyUri)
         {
-            var res = _repository.GetLongUrlAsync(tinyUri).Result.ToString();
+            string? res = _repository.GetLongUrlAsync(tinyUri).Result?.ToString();
             if (res == null) return "";
             else return res;
         }
@@ -50,7 +50,7 @@ namespace TinyURLService.Service.URLService
         {
             // Try 50 iterations before reporting error
             string generatedShortUrl = _generator.GenerateUrl(customUri);
-            if (_repository.AddShortUrlAsync(uri, new Uri(generatedShortUrl)).Result) return false;
+            if (!_repository.AddShortUrlAsync(uri, new Uri(generatedShortUrl)).Result) return false;
             return true;
         }
 
