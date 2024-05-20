@@ -40,9 +40,9 @@ Instead, I chose to implement a Trie data structure for storing URLs, with each 
 	- In a business setting, vendors would have the option to purchase quantities of domains, ports or paths and this data structure would separate the data between vendors based on that (as well as generate individual statistics for each vendor).
 
 ### Potential Problems with this approach:
-	- As you may have noticed, the hashes are computed to determine the uniqueness of a URL. There are a number of problems behind this when scaled:
-		- There will be hash collissions for large data volumes.
-		- The hashes are inherently 32 bit integers, and can hold up to 2^32 unique values. By comparison, IPV6 addresses have 128 bit addresses. As a result, the number of potential addresses stored in this manner might not be enough in the future.
+As you may have noticed, the hashes are computed to determine the uniqueness of a URL. There are a number of problems behind this when scaled:
+	- There will be hash collissions for large data volumes.
+	- The hashes are inherently 32 bit integers, and can hold up to 2^32 unique values. By comparison, IPV6 addresses have 128 bit addresses. As a result, the number of potential addresses stored in this manner might not be enough in the future.
 
 ## TODO
 As with all good projects, there is always more to do!
