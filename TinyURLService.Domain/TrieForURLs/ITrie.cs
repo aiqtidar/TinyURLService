@@ -35,12 +35,16 @@ namespace TinyURLService.Domain.TrieForURLs
         public IList<ShortUrl> Remove(IList<ShortUrl> shortUrls); // Remove list of ShortUrls
 
         public IList<ShortUrl>? GetShortUrls(LongUrl longUrl); // Get ShortUrls from a longURL
+        public int? GetShortUrlHits(ShortUrl shortUrl);
 
         public bool SearchHost(string host); // Search if a specific host exists
 
         public bool DoesUriExist(LongUrl longUrl); // Search if a specific URI exists
 
         public bool DoesShortUrlExist(ShortUrl shortUrl);
+
+        public bool AddHitToShortUrl(ShortUrl shortUrl);
+
 
         public LongUrl? GetLongUrl(ShortUrl shortUrl);
 

@@ -9,7 +9,7 @@ namespace TinyURLService.Data.Repositories
     public class InMemoryRepository : IRepository<bool>
     {
         // Dictionary to keep track of existing short URLs - required to make shortURLs unique
-        private Trie UrlTrie { get; } = new();
+        private ITrie<string, int> UrlTrie { get; } = new Trie();
 
         public Task<bool> AddShortUrlAsync(Uri longUri, Uri shortUri)
         {
@@ -51,9 +51,19 @@ namespace TinyURLService.Data.Repositories
             return Task.FromResult(UrlTrie.DoesShortUrlExist(new ShortUrl(shortUrl)));
         }
 
+        public Task<bool> AddHitToAShortUrlAsync(Uri shortUri)
+        {
+            return Task.FromResult(UrlTrie.AddHitToShortUrl(new ShortUrl(shortUri)));
+        }
+
+        public Task<int?> GetShortUrlHitsAsync(Uri shortUri)
+        {
+            return Task.FromResult(UrlTrie.GetShortUrlHits(new ShortUrl(shortUri)));
+        }
+
         public Task<bool> SaveChangesAsAsync()
         {
             return Task.FromResult(true);
-        }
+        }        
     }
 }

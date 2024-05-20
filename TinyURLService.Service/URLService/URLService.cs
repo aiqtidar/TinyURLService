@@ -6,15 +6,15 @@ using TinyURLService.Domain.URLs;
 
 namespace TinyURLService.Service.URLService
 {
-    public class URLService(IRepository<bool> repository, IURLGenerator generator) : IURLService
+    public class URLService(IRepository<bool> repository, IURLGeneratorService generator) : IURLService
     {
         private readonly IRepository<bool> _repository = repository;
-        private readonly IURLGenerator _generator = generator;
+        private readonly IURLGeneratorService _generator = generator;
 
         public string CreateTinyUrlFromUrl(Uri uri)
         {
             // Try 50 iterations before reporting error
-            string shortUrl = TryWithRetry(() =>
+            string? shortUrl = TryWithRetry(() =>
             {
                 string generatedShortUrl = _generator.GenerateUrl(_generator.GenerateUrlLength());
                 _repository.AddShortUrlAsync(uri, new Uri(generatedShortUrl));
@@ -43,7 +43,15 @@ namespace TinyURLService.Service.URLService
 
         public string GetPopularityOfTinyUrl(Uri tinyUri)
         {
-            throw new NotImplementedException();
+            string? res = _repository.GetShortUrlHitsAsync(tinyUri)?.Result?.ToString();
+            if (res == null) return "";
+            else return res;
+        }
+
+        public bool AddHitToTinyUrl(Uri tinyUri)
+        {
+            if (_repository.AddHitToAShortUrlAsync(tinyUri).Result) return true;
+            return false;
         }
 
         public bool CreateTinyUrlFromUrl(Uri uri, string customUri)
@@ -93,7 +101,5 @@ namespace TinyURLService.Service.URLService
                 }
             }
         }
-
-        
     }
 }

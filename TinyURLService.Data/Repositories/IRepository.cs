@@ -16,8 +16,10 @@ namespace TinyURLService.Data.Repositories
         public Task<IList<ShortUrl>?> GetShortUrlAsync(Uri longUri);
 
         public Task<LongUrl?> GetLongUrlAsync(Uri longUri);
+        public Task<int?> GetShortUrlHitsAsync(Uri shortUri);
 
-        public Task<T> DoesShortUrlExistAsync(Uri shortUrl);
+        public Task<T> DoesShortUrlExistAsync(Uri shortUri);
+        public Task<T> AddHitToAShortUrlAsync(Uri shortUri);
 
         public Task<T> SaveChangesAsAsync();
 
