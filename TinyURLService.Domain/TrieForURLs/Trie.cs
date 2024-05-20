@@ -116,8 +116,6 @@ namespace TinyURLService.Domain.TrieForURLs
             return Remove(new List<ShortUrl> { shortUrl }).Count == 0;
         }
 
-
-
         private bool Remove(LongUrl longUrl, IList<ShortUrl> shortUrls)
         {
             if (longUrl == null) return false;
@@ -179,13 +177,29 @@ namespace TinyURLService.Domain.TrieForURLs
             else return null;
         }
 
+        public int? GetShortUrlHits(ShortUrl shortUrl)
+        {
+            if (ExistingShortUrls.ContainsKey(shortUrl)) return GetShortUrls(ExistingShortUrls[shortUrl])?.Where(x => x.Uri.ToString().Equals(shortUrl.Uri.ToString())).First().hits;
+            else return null;
+        }
+
+        public bool AddHitToShortUrl(ShortUrl shortUrl)
+        {
+            if (ExistingShortUrls.ContainsKey(shortUrl))
+            {
+                GetShortUrls(ExistingShortUrls[shortUrl]).First(x => x.Uri.ToString().Equals(shortUrl.Uri.ToString())).hits++;
+                return true;
+            }
+            return false;
+        }
+
         private TrieNode? TraverseTree(BaseUrl url)
         {
             if (url == null) return null;
 
             var stringToTraverse = ParseUrl(url);
 
-            TrieNode currentNode = root;
+            TrieNode? currentNode = root;
 
             foreach (var part in stringToTraverse)
             {
@@ -195,7 +209,5 @@ namespace TinyURLService.Domain.TrieForURLs
 
             return currentNode;
         }
-
-        
     }
 }

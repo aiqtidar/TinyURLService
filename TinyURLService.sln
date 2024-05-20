@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyURLService.Data", "Tiny
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyURLService.UI", "TinyURLService.UI\TinyURLService.UI.csproj", "{A6BCF0D7-66D2-4FD7-A657-E1E167D0C4B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyURLService.Service", "TinyURLService.Service\TinyURLService.Service.csproj", "{D9CCF199-B98E-49AE-9482-D89B51A1AF20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyURLService.Service", "TinyURLService.Service\TinyURLService.Service.csproj", "{D9CCF199-B98E-49AE-9482-D89B51A1AF20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyURLService.Tests", "TinyURLService.Tests\TinyURLService.Tests.csproj", "{5DF0466B-F227-4D1C-A3A4-684AF6C64066}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D9CCF199-B98E-49AE-9482-D89B51A1AF20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9CCF199-B98E-49AE-9482-D89B51A1AF20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9CCF199-B98E-49AE-9482-D89B51A1AF20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DF0466B-F227-4D1C-A3A4-684AF6C64066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DF0466B-F227-4D1C-A3A4-684AF6C64066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DF0466B-F227-4D1C-A3A4-684AF6C64066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DF0466B-F227-4D1C-A3A4-684AF6C64066}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

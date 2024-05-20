@@ -1,35 +1,42 @@
 ﻿using System.Text;
-using TinyURLService.Domain.URLs;
-
-using System;
 using Microsoft.Extensions.DependencyInjection;
 using TinyURLService.Service.URLService;
 using TinyURLService.Service.URLGeneratorService;
 using TinyURLService.Data.Repositories;
-using System.Runtime.CompilerServices;
 using TinyURLService.Domain.TrieForURLs;
+using Microsoft.Extensions.Configuration;
 
 public class Program
 {
+    public static IConfigurationRoot Configuration { get; set; }
+
     public static void Main(string[] args)
     {
-        // Create a new ServiceCollection
-        var serviceCollection = new ServiceCollection();
+        // Just a dummy read operation for now
+        // TODO: Move this to a different project so that we have a common configuration for all
+        Configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .Build();
 
+        // COnfigure services
+        var serviceCollection = new ServiceCollection();
         ConfigureServices(serviceCollection);
 
         var serviceProvider = serviceCollection.BuildServiceProvider();
 
         var app = serviceProvider.GetService<BasicConsoleApplication>();
-        app.Run();
+        app?.Run();
     }
 
     private static void ConfigureServices(IServiceCollection services)
     {
+        
+
         services.AddSingleton<ITrieNode<string, int>, TrieNode>();
         services.AddSingleton<ITrie<string, int>, Trie>();
         services.AddSingleton<IRepository<bool>, InMemoryRepository>();
-        services.AddTransient<IURLGenerator, URLGenerator>();
+        services.AddTransient<IURLGeneratorService, URLGeneratorService>();
         services.AddSingleton<IURLService, URLService>();
         services.AddTransient<BasicConsoleApplication>();
     }
@@ -89,6 +96,9 @@ public class BasicConsoleApplication(IURLService urlService)
                 break;
             case 7:
                 Process_7();
+                break;
+            case 8:
+                Process_8();
                 break;
             default:
                 break;
@@ -215,6 +225,16 @@ public class BasicConsoleApplication(IURLService urlService)
         return;
     }
 
+    private void Process_8()
+    {
+        Uri uri = ParseUri();
+
+        if (!_urlService.AddHitToTinyUrl(uri)) Console.WriteLine("Failed to add hit");
+        else Console.WriteLine("Hit has been added");
+
+        return;
+    }
+
     private static Uri ParseUri()
     {
         Console.WriteLine("Please provide your URL: ");
@@ -241,7 +261,7 @@ public class BasicConsoleApplication(IURLService urlService)
         {
             string? input = Console.ReadLine();
 
-            if (!string.IsNullOrEmpty(input) && int.TryParse(input, out int res) && (res >= 0 && res <= 7) ) return res;
+            if (!string.IsNullOrEmpty(input) && int.TryParse(input, out int res) && (res >= 0 && res <= 8) ) return res;
             Console.WriteLine("Input is invalid - Please provide correct integer value between 1 and 8!");
             Console.WriteLine();
         }
@@ -256,9 +276,10 @@ public class BasicConsoleApplication(IURLService urlService)
         Console.WriteLine("2 :: CREATE a custom Tiny URL");
         Console.WriteLine("3 :: GET Tiny URLs of an URL (from memory)");
         Console.WriteLine("4 :: GET the associated URL for a Tiny URL (from memory)");
-        Console.WriteLine("5 :: GET the popularity (click rate) of a Tiny URL (from memory)");
+        Console.WriteLine("5 :: GET the popularity (hits) of a Tiny URL (from memory)");
         Console.WriteLine("6 :: DELETE a Tiny URL");
         Console.WriteLine("7 :: DELETE all Tiny URLs for a URL");
+        Console.WriteLine("8 :: Add a hit to a Tiny URLs (increase popularity by one)");
         Console.WriteLine("0 :: Exit");
     }
 
@@ -281,71 +302,3 @@ public class BasicConsoleApplication(IURLService urlService)
         return res;
     }
 }
-
-
-
-
-
-
-//Uri uri1 = new Uri("https://user:password@www.contoso.com/Home/Index.htm?q1=v1&q2=v2#FragmentName");
-
-//string url = "www.google.com/url1";
-
-
-
-
-
-
-//Uri uri = ParseUri(url);
-
-//LongUrl longUrl1 = new LongUrl(uri1);
-
-
-
-
-
-
-
-//Console.WriteLine($"AbsolutePath: {uri.AbsolutePath}");
-//Console.WriteLine($"AbsoluteUri: {uri.AbsoluteUri}");
-//Console.WriteLine($"DnsSafeHost: {uri.DnsSafeHost}");
-//Console.WriteLine($"Fragment: {uri.Fragment}");
-//Console.WriteLine($"Host: {uri.Host}");
-//Console.WriteLine($"HostNameType: {uri.HostNameType}");
-//Console.WriteLine($"IdnHost: {uri.IdnHost}");
-//Console.WriteLine($"IsAbsoluteUri: {uri.IsAbsoluteUri}");
-//Console.WriteLine($"IsDefaultPort: {uri.IsDefaultPort}");
-//Console.WriteLine($"IsFile: {uri.IsFile}");
-//Console.WriteLine($"IsLoopback: {uri.IsLoopback}");
-//Console.WriteLine($"IsUnc: {uri.IsUnc}");
-//Console.WriteLine($"LocalPath: {uri.LocalPath}");
-//Console.WriteLine($"OriginalString: {uri.OriginalString}");
-//Console.WriteLine($"PathAndQuery: {uri.PathAndQuery}");
-//Console.WriteLine($"Port: {uri.Port}");
-//Console.WriteLine($"Query: {uri.Query}");
-//Console.WriteLine($"Scheme: {uri.Scheme}");
-//Console.WriteLine($"Segments: {string.Join(", ", uri.Segments)}");
-//Console.WriteLine($"UserEscaped: {uri.UserEscaped}");
-//Console.WriteLine($"UserInfo: {uri.UserInfo}");
-
-// AbsolutePath: /Home/Index.htm
-// AbsoluteUri: https://user:password@www.contoso.com:80/Home/Index.htm?q1=v1&q2=v2#FragmentName
-// DnsSafeHost: www.contoso.com
-// Fragment: #FragmentName
-// Host: www.contoso.com
-// HostNameType: Dns
-// IdnHost: www.contoso.com
-// IsAbsoluteUri: True
-// IsDefaultPort: False
-// IsFile: False
-// IsLoopback: False
-// IsUnc: False
-// LocalPath: /Home/Index.htm
-// OriginalString: https://user:password@www.contoso.com:80/Home/Index.htm?q1=v1&q2=v2#FragmentName
-// PathAndQuery: /Home/Index.htm?q1=v1&q2=v2
-// Port: 80
-// Query: ?q1=v1&q2=v2
-// Scheme: https
-// Segments: /, Home/, Index.htm
-// UserEscaped: False
-// UserInfo: user:password

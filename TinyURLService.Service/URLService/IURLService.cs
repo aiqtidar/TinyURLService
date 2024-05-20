@@ -14,6 +14,7 @@ namespace TinyURLService.Service.URLService
         public string GetUrlFromTinyUrl(Uri tinyUri);
 
         public string GetPopularityOfTinyUrl(Uri tinyUri);
+        public bool AddHitToTinyUrl(Uri tinyUri);
 
         public string CreateTinyUrlFromUrl(Uri uri);
         public bool CreateTinyUrlFromUrl(Uri uri, string customUri);

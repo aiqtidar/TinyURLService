@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TinyURLService.Service.URLGeneratorService
 {
-    public class URLGenerator : IURLGenerator
+    public class URLGeneratorService : IURLGeneratorService
     {
         private static readonly Random random = new Random();
 
@@ -28,10 +28,11 @@ namespace TinyURLService.Service.URLGeneratorService
             return new StringBuilder().Append("https://tinyUrlDomain.com/").Append(customUrl).ToString();            
         }
 
-        public int GenerateUrlLength()
+        public int GenerateUrlLength(int min = 1, int max = 30)
         {
             // TODO: Values here need to go in appsettings
-            return random.Next(1, 30);
+            if (min < 0 || max > 30) return 30;
+            return random.Next(min, max);
         }
     }
 }

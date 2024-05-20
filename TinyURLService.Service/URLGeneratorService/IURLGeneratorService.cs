@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace TinyURLService.Service.URLGeneratorService
 {
-    public interface IURLGenerator
+    public interface IURLGeneratorService
     {
         public string GenerateUrl(int length);
 
         public string GenerateUrl(string customUrl);
 
-        public int GenerateUrlLength();
+        public int GenerateUrlLength(int min = 1, int max = 30);
     }
 }
