@@ -34,15 +34,15 @@ Note that there are a number of functions available in the API that are not acce
 A simple approach would be to introduce two Dictionaries for bidirectional mapping between URLs and TinyURLs. I chose not to go with this approach.
 
 Instead, I chose to implement a Trie data structure for storing URLs, with each Node contains the TinyURLs for each URL. There are several advantages to this:
-	- The Root Node always contains all domains, follows by port and path. This ensures that domains, ports and path are grouped together.
-	- Generating statistics on URLs is much simpler and take much less time complexity. For example, one can find the number of Tiny URLs for a domain, port or any of its paths in linear time.
-	- Measures of similarity between URLs can be established by simply comparing height of the each URL's tree.
-	- In a business setting, vendors would have the option to purchase quantities of domains, ports or paths and this data structure would separate the data between vendors based on that (as well as generate individual statistics for each vendor).
+- The Root Node always contains all domains, follows by port and path. This ensures that domains, ports and path are grouped together.
+- Generating statistics on URLs is much simpler and take much less time complexity. For example, one can find the number of Tiny URLs for a domain, port or any of its paths in linear time.
+- Measures of similarity between URLs can be established by simply comparing height of the each URL's tree.
+- In a business setting, vendors would have the option to purchase quantities of domains, ports or paths and this data structure would separate the data between vendors based on that (as well as generate individual statistics for each vendor).
 
 ### Potential Problems with this approach:
 As you may have noticed, the hashes are computed to determine the uniqueness of a URL. There are a number of problems behind this when scaled:
-	- There will be hash collissions for large data volumes.
-	- The hashes are inherently 32 bit integers, and can hold up to 2^32 unique values. By comparison, IPV6 addresses have 128 bit addresses. As a result, the number of potential addresses stored in this manner might not be enough in the future.
+- There will be hash collissions for large data volumes.
+- The hashes are inherently 32 bit integers, and can hold up to 2^32 unique values. By comparison, IPV6 addresses have 128 bit addresses. As a result, the number of potential addresses stored in this manner might not be enough in the future.
 
 ## TODO
 As with all good projects, there is always more to do!
