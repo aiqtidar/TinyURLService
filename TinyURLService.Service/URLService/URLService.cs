@@ -66,7 +66,7 @@ namespace TinyURLService.Service.URLService
 
         public bool DoesTinyUrlExist(Uri tinyUri)
         {
-            return _repository.DeleteShortUrlAsync(tinyUri).Result;
+            return _repository.DoesShortUrlExistAsync(tinyUri).Result;
         }
 
         public static T? TryWithRetry<T>(Func<T> func, int maxRetries, TimeSpan delayBetweenRetries)

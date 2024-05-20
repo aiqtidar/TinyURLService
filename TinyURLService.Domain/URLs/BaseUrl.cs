@@ -18,6 +18,11 @@ namespace TinyURLService.Domain.URLs
             IsDeleted = false;
         }
 
+        public override string ToString()
+        {
+            return Uri.ToString();
+        }
+
         public bool Equals(BaseUrl? x, BaseUrl? y)
         {
             if (x == null || y == null) return false;
