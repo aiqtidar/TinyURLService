@@ -10,11 +10,9 @@ namespace TinyURLService.Domain.URLs
     public class ShortUrl : BaseUrl
     {
         public int hits { get; set; }
-        public override Uri Uri { get; set; }
 
-        public ShortUrl(Uri Uri) : base()
+        public ShortUrl(Uri Uri) : base(Uri)
         {
-            this.Uri = Uri;
             hits = 0;
         }
     }

@@ -51,7 +51,7 @@ namespace TinyURLService.Domain.TrieForURLs
     {
         TrieNode root = new();
 
-        private Dictionary<ShortUrl, LongUrl> ExistingShortUrls { get; } = new();
+        private Dictionary<ShortUrl, LongUrl> ExistingShortUrls { get; } = new Dictionary<ShortUrl, LongUrl>(new BaseUrlEqualityComparer());
 
         // Returns false if the insert is not possible
         public bool Insert(LongUrl longUrl, IList<ShortUrl> shortUrls)
@@ -59,9 +59,9 @@ namespace TinyURLService.Domain.TrieForURLs
             // Is this insert possible?
             if (shortUrls.Any(ExistingShortUrls.ContainsKey) || longUrl == null) return false;
 
-            var currentNode = TraverseTree(longUrl);
+            var currentNode = root;
 
-            if (currentNode == null) return false;
+            foreach (var part in ParseUrl(longUrl))  currentNode = currentNode.AddNode(part);
 
             foreach (var shortUrl in shortUrls)
             {
@@ -82,8 +82,7 @@ namespace TinyURLService.Domain.TrieForURLs
         public bool Remove(LongUrl longUrl)
         {
             if (longUrl == null) return false;
-
-            var parts = new List<string>() { longUrl.Uri.Host, longUrl.Uri.Port.ToString() }.Concat(longUrl.Uri.AbsolutePath.Split('/')).ToArray();
+            string[] parts = ParseUrl(longUrl);
 
             // Keep a marker of when the last valid key was
             var currentNode = root;
@@ -94,17 +93,22 @@ namespace TinyURLService.Domain.TrieForURLs
             {
                 currentNode = currentNode.GetNode(parts[i]);
                 if (currentNode == null) return false;
-                
+
                 if (i != parts.Length - 1 && currentNode.shortURLs.Count != 0)
                 {
                     lastValidNode = currentNode;
-                    lastValidNodeKey = parts[i+1];
+                    lastValidNodeKey = parts[i + 1];
                 }
             }
             // Get rid of the short nodes from dictionary
             foreach (var key in currentNode.shortURLs) ExistingShortUrls.Remove(key);
-            
+
             return lastValidNode.RemoveNode(lastValidNodeKey);
+        }
+
+        private static string[] ParseUrl(BaseUrl url)
+        {
+            return new List<string>() { url.Uri.Host, url.Uri.Port.ToString() }.Concat(url.Uri.AbsolutePath.Split('/')).Where(x => !string.IsNullOrEmpty(x)).ToArray();
         }
 
         public bool Remove(ShortUrl shortUrl)
@@ -117,8 +121,6 @@ namespace TinyURLService.Domain.TrieForURLs
         private bool Remove(LongUrl longUrl, IList<ShortUrl> shortUrls)
         {
             if (longUrl == null) return false;
-
-            var parts = new List<string>() { longUrl.Uri.Host, longUrl.Uri.Port.ToString() }.Concat(longUrl.Uri.AbsolutePath.Split('/')).ToArray();
 
             var currentNode = TraverseTree(longUrl);
 
@@ -140,7 +142,7 @@ namespace TinyURLService.Domain.TrieForURLs
         {
             // Remove the ones that are found
             var missingShortUrls = shortUrls.Where(x => !ExistingShortUrls.ContainsKey(x)).ToList();
-            var foundLongUrls = ExistingShortUrls.Where(kv => shortUrls.Contains(kv.Key)).GroupBy(kv => kv.Value).ToList();
+            var foundLongUrls = ExistingShortUrls.Where(kv => shortUrls.Contains(kv.Key, new BaseUrlEqualityComparer())).GroupBy(kv => kv.Value).ToList();
 
             foreach (var kv in foundLongUrls) Remove(kv.Key, kv.Select(kv => kv.Key).ToList());
 
@@ -181,7 +183,7 @@ namespace TinyURLService.Domain.TrieForURLs
         {
             if (url == null) return null;
 
-            var stringToTraverse = new List<string>() { url.Uri.Host, url.Uri.Port.ToString() }.Concat(url.Uri.AbsolutePath.Split('/')).ToArray();
+            var stringToTraverse = ParseUrl(url);
 
             TrieNode currentNode = root;
 

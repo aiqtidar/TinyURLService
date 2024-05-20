@@ -150,8 +150,7 @@ public class BasicConsoleApplication(IURLService urlService)
         Console.WriteLine();
 
         if (!_urlService.CreateTinyUrlFromUrl(uri, input)) Console.WriteLine("An unexpected error occurred...");
-
-        Console.WriteLine($"Url has been created successfully at https://tinyUrlDomain.com/{input}");
+        else Console.WriteLine($"Url has been created successfully at https://tinyUrlDomain.com/{input}");
 
         return;
     }
